@@ -20,6 +20,13 @@ suites:
     run_list:
       - recipe[tor::default]
     verifier:
+      attributes:
+        admin_users:
+          - example_user
       inspec_tests:
         - test/smoke/default
     attributes:
+      tor:
+        admin_users:
+          - example_user
+        default_passwd: '$1$DerpyDer$xMbmxvbfTVq.e5E0Ds8wr0'

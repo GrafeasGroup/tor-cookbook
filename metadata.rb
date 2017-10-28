@@ -15,3 +15,4 @@ recipe 'tor::redis', 'Installs/Configures Redis server'
 
 supports 'centos', '>= 7.3'
 depends 'yum-ius', '~> 2.2.0'
+depends 'chef-client', '~> 9.0.0'

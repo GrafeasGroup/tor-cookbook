@@ -1,0 +1,2 @@
+# Set all users in the 'sudo' group with full sudo access
+%sudo	ALL=(ALL)	ALL
