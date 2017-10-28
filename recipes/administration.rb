@@ -24,6 +24,21 @@ admin_settings.each do |admin|
     password admin['shadow_passwd']
     action :create
   end
+
+  directory "/home/#{admin['id']}/.ssh" do
+    owner admin['id']
+    group admin['id']
+    mode '0700'
+  end
+
+  file "/home/#{admin['id']}/.ssh/authorized_keys" do
+    content admin['public_key']
+
+    owner admin['id']
+    group admin['id']
+    mode '0600'
+    sensitive true
+  end
 end
 
 group 'sudo' do
