@@ -13,30 +13,21 @@ cookbook_file '/etc/sudoers.d/sudoers' do
   mode '0440'
 end
 
-node[cookbook_name]['admin_users'].each do |username|
-  execute "nonce-password-#{username}" do
-    command "chage -d0 #{username}"
-    action :nothing
+admin_settings = search(:sysadmins, '*:*') || []
 
-    not_if "chage -l | grep -q 'Password expires *: *password must be changed'"
-  end
-
-  user username do
+admin_settings.each do |admin|
+  user admin['id'] do
     comment 'administrative user'
-    home "/home/#{username}"
-    shell '/bin/bash'
+    home "/home/#{admin['id']}"
+    shell admin.fetch('shell', '/bin/bash')
     manage_home true
-    password node[cookbook_name]['default_password']
+    password admin['shadow_passwd']
     action :create
-
-    notifies :run, "execute[nonce-password-#{username}]", :immediately
-
-    not_if { File.exist?("/home/#{username}") }
   end
 end
 
 group 'sudo' do
-  members node[cookbook_name]['admin_users']
+  members(admin_settings.map { |u| u['id'] })
   append true
   action :create
 end
