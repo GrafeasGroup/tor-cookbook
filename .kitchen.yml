@@ -23,10 +23,5 @@ suites:
       attributes:
         admin_users:
           - example_user
-      inspec_tests:
-        - test/smoke/default
+    data_bags_path: 'test/integration/data_bags'
     attributes:
-      tor:
-        admin_users:
-          - example_user
-        default_passwd: '$1$DerpyDer$xMbmxvbfTVq.e5E0Ds8wr0'

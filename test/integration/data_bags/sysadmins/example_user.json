@@ -1,0 +1,5 @@
+{
+  "id": "example_user",
+  "shadow_passwd": "$1$DerpyDer$xMbmxvbfTVq.e5E0Ds8wr0",
+  "shell": "/bin/bash"
+}
