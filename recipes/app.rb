@@ -70,3 +70,23 @@ git '/opt/tor_ocr' do
   # notifies :run, 'execute[install ocr]', :immediately
   action :sync
 end
+
+directory '/var/tor'
+
+template '/var/tor/praw.ini' do
+  source 'praw.ini.erb'
+
+  variables(
+    bots: (search(:bots, '*:*') || []).map do |bot|
+      {
+        slug: bot['slug'],
+        username: bot['username'],
+        password: bot['password'],
+        client_id: bot['client_id'],
+        secret: bot['secret_key'],
+        user_agent_slug: bot['user_agent_slug'] || bot['username'],
+        version: node['tor'][bot['slug'] + '_revision'] || 'master'
+      }
+    end
+  )
+end
