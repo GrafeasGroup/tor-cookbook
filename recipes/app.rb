@@ -48,7 +48,7 @@ execute 'install ocr' do
 end
 
 git '/opt/tor' do
-  repository 'https://github.com/TranscribersOfReddit/TranscribersOfReddit.git'
+  repository 'https://github.com/GrafeasGroup/tor.git'
   revision node['tor']['tor_revision']
 
   notifies :run, 'execute[install tor]', :immediately
@@ -56,7 +56,7 @@ git '/opt/tor' do
 end
 
 git '/opt/tor_archivist' do
-  repository 'https://github.com/TranscribersOfReddit/ToR_Archivist.git'
+  repository 'https://github.com/GrafeasGroup/tor_archivist.git'
   revision node['tor']['archivist_revision']
 
   notifies :run, 'execute[install archivist]', :immediately
@@ -64,7 +64,7 @@ git '/opt/tor_archivist' do
 end
 
 git '/opt/tor_ocr' do
-  repository 'https://github.com/TranscribersOfReddit/ToR_OCR.git'
+  repository 'https://github.com/GrafeasGroup/tor_ocr.git'
   revision node['tor']['ocr_revision']
 
   # notifies :run, 'execute[install ocr]', :immediately
