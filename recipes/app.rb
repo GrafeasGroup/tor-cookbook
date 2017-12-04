@@ -18,8 +18,22 @@ virtualenv '/opt/virtualenv' do
   not_if { File.exist?('/opt/virtualenv/bin/activate') }
 end
 
+user 'tor_bot' do
+  comment 'TranscribersOfReddit bots'
+  system true
+  home '/var/tor'
+
+  action :create
+end
+
+group 'bots' do
+  members ['tor_bot']
+  append true
+  action :create
+end
+
 directory '/var/tor' do
-  owner 'tor_bots'
+  owner 'tor_bot'
   group 'bots'
 end
 
@@ -39,20 +53,6 @@ template '/var/tor/praw.ini' do
       }
     end
   )
-end
-
-user 'tor_bot' do
-  comment 'TranscribersOfReddit bots'
-  system true
-  home '/var/tor'
-
-  action :create
-end
-
-group 'bots' do
-  members ['tor_bot']
-  append true
-  action :create
 end
 
 include_recipe 'tor::tor_moderator'

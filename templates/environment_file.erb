@@ -5,5 +5,5 @@ BUGSNAG_API_KEY=<%= @bugsnag_key %>
 SLACK_API_KEY=<%= @slack_key %>
 SENTRY_API_URL=<%= @sentry_url %>
 <% (@extra_variables || {}).each do |key, value| %>
-<%= key %>=<%= value %>
+<%= key.to_s %>=<%= value %>
 <% end %>

@@ -14,6 +14,9 @@ execute 'install archivist' do
   EOF
 
   subscribes :run, 'git[/opt/tor_archivist]', :immediately
+  notifies :create, 'systemd_unit[tor_archivist.service]', :immediately
+  notifies :enable, 'systemd_unit[tor_archivist.service]', :immediately
+  notifies :restart, 'systemd_unit[tor_archivist.service]', :delayed
 end
 
 template '/var/tor/tor_archivist.env' do
@@ -21,14 +24,18 @@ template '/var/tor/tor_archivist.env' do
 
   variables(
     bot_name: 'tor_archivist',
-    debug_mode: !node.chef_environment.casecmp('production'),
+    debug_mode: node.chef_environment != 'production',
+    redis_uri: 'redis://localhost:6379/0',
+    bugsnag_api_key: '',
+    slack_api_key: '',
+    sentry_api_url: '',
     extra_vars: {
       # None right now, but we'll fill these in as they come up
     }
   )
 end
 
-systemd_unit 'tor_archivist.service' do
+systemd_unit 'tor_archivist.service' do # rubocop:disable Metrics/BlockLength
   content(
     Unit: {
       Description: 'The content curation bot for /r/TranscribersOfReddit',
@@ -37,8 +44,8 @@ systemd_unit 'tor_archivist.service' do
     },
     Service: {
       Type: 'simple',
-      ExecStart: '/opt/virtualenv/bin/tor-archivist',
       EnvironmentFile: '/var/tor/tor_archivist.env',
+      ExecStart: '/opt/virtualenv/bin/tor-archivist',
       User: 'tor_bot',
       Group: 'bots',
       WorkingDirectory: '/var/tor',
@@ -55,7 +62,10 @@ systemd_unit 'tor_archivist.service' do
 
   action :create
 
-  subscribes :reload_or_try_restart, 'template[/var/tor/praw.ini]', :delayed
+  # subscribes :reload_or_try_restart, 'template[/var/tor/praw.ini]', :delayed
+  subscribes :reload_or_try_restart, 'template[/var/tor/tor_archivist.env]', :delayed
+
+  only_if { ::File.exist?('/opt/virtualenv/bin/tor-archivist') }
 end
 
 git '/opt/tor_archivist' do

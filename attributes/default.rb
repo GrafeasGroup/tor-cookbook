@@ -1,5 +1,5 @@
 default['tor'].tap do |attr|
-  attr['tor_revision'] = 'consistent-docs-update'
-  attr['archivist_revision'] = 'consistent-docs-and-project-structure'
-  attr['ocr_revision'] = 'consistent-docs-and-project-structure'
+  attr['tor_revision'] = 'CLOUD-DEPLOYMENT-TEST'
+  attr['archivist_revision'] = 'CLOUD-DEPLOYMENT-TEST'
+  attr['ocr_revision'] = 'CLOUD-DEPLOYMENT-TEST'
 end
