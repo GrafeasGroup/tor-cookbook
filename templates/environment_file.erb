@@ -1,0 +1,9 @@
+BOT_NAME=<%= @bot_name %>
+<% if @debug_mode %>DEBUG_MODE=1<% end %>
+REDIS_CONNECTION_URL=<%= @redis_uri %>
+BUGSNAG_API_KEY=<%= @bugsnag_key %>
+SLACK_API_KEY=<%= @slack_key %>
+SENTRY_API_URL=<%= @sentry_url %>
+<% (@extra_variables || {}).each do |key, value| %>
+<%= key %>=<%= value %>
+<% end %>
