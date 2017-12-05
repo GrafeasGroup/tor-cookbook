@@ -4,6 +4,11 @@
 #
 # Copyright:: 2017, Grafeas Group, Ltd., All Rights Reserved.
 
+bugsnag_key = search(:api_keys, 'id:bugsnag').first.fetch('key')
+sentry_url = search(:api_keys, 'id:sentry').first.fetch('url')
+slack_key = search(:api_keys, 'id:slack').first.fetch('key')
+ocr_key = search(:api_keys, 'id:ocr_space').first.fetch('key')
+
 execute 'install ocr' do
   action :nothing
 
@@ -26,11 +31,11 @@ template '/var/tor/tor_ocr.env' do
     bot_name: 'tor_ocr',
     debug_mode: node.chef_environment != 'production',
     redis_uri: 'redis://localhost:6379/0',
-    bugsnag_api_key: '',
-    slack_api_key: '',
-    sentry_api_url: '',
+    bugsnag_api_key: bugsnag_key,
+    slack_api_key: slack_key,
+    sentry_api_url: sentry_url,
     extra_vars: {
-      # None right now, but we'll fill these in as they come up
+      'OCR_API_KEY' => ocr_key
     }
   )
 end
