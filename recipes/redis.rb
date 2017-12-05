@@ -35,12 +35,12 @@ file '/var/lib/redis/dump.rdb' do
   owner 'redis'
   group 'redis'
 
-  notify :stop, 'service[redis]', :before
-  notify :start, 'service[redis]', :immediately
+  notifies :stop, 'service[redis]', :before
+  notifies :start, 'service[redis]', :immediately
 
   only_if { ::File.exist?('/opt/redis-restore.rdb') }
   # Make sure we remove the file when done, so a restore isn't triggered every time.
-  notify :delete, 'file[/opt/redis-restore.rdb]', :immediately
+  notifies :delete, 'file[/opt/redis-restore.rdb]', :immediately
 end
 
 # This is the location where we will put a restore snapshot.
