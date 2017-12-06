@@ -36,6 +36,7 @@ template '/var/tor/tor_moderator.env' do
     bugsnag_key: bugsnag_key,
     slack_key: slack_key,
     sentry_url: sentry_url,
+    heartbeat_filename: 'moderator.heartbeat',
     extra_variables: {
       # None right now, but we'll fill these in as they come up
     }

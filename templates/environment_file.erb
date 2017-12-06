@@ -4,6 +4,7 @@ REDIS_CONNECTION_URL=<%= @redis_uri %>
 BUGSNAG_API_KEY=<%= @bugsnag_key %>
 SLACK_API_KEY=<%= @slack_key %>
 SENTRY_API_URL=<%= @sentry_url %>
+HEARTBEAT_FILE=<%= @heartbeat_filename %>
 <% (@extra_variables || {}).each do |key, value| %>
 <%= key.to_s %>=<%= value %>
 <% end %>

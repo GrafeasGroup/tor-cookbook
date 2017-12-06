@@ -37,6 +37,7 @@ template '/var/tor/tor_ocr.env' do
     bugsnag_key: bugsnag_key,
     slack_key: slack_key,
     sentry_url: sentry_url,
+    heartbeat_filename: 'ocr.heartbeat',
     extra_variables: {
       'OCR_API_KEY' => ocr_key
     }
