@@ -55,6 +55,7 @@ template '/var/tor/praw.ini' do
   )
 end
 
+include_recipe 'tor::tor_core'
 include_recipe 'tor::tor_moderator'
 include_recipe 'tor::tor_archivist'
 include_recipe 'tor::tor_ocr'
