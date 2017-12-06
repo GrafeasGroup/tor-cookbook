@@ -29,6 +29,8 @@ template '/var/tor/tor_archivist.env' do
   owner 'tor_bot'
   group 'bots'
 
+  sensitive true
+
   variables(
     bot_name: 'tor_archivist',
     debug_mode: node.chef_environment != 'production',

@@ -29,6 +29,8 @@ template '/var/tor/tor_moderator.env' do
   owner 'tor_bot'
   group 'bots'
 
+  sensitive true
+
   variables(
     bot_name: 'tor',
     debug_mode: node.chef_environment != 'production',

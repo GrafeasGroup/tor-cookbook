@@ -30,6 +30,8 @@ template '/var/tor/tor_ocr.env' do
   owner 'tor_bot'
   group 'bots'
 
+  sensitive true
+
   variables(
     bot_name: 'tor_ocr',
     debug_mode: node.chef_environment != 'production',
