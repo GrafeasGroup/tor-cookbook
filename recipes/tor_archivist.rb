@@ -33,9 +33,9 @@ template '/var/tor/tor_archivist.env' do
     bot_name: 'tor_archivist',
     debug_mode: node.chef_environment != 'production',
     redis_uri: 'redis://localhost:6379/0',
-    bugsnag_api_key: bugsnag_key,
-    slack_api_key: slack_key,
-    sentry_api_url: sentry_url,
+    bugsnag_key: bugsnag_key,
+    slack_key: slack_key,
+    sentry_url: sentry_url,
     extra_variables: {
       # None right now, but we'll fill these in as they come up
     }
