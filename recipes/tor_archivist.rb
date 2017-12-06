@@ -26,6 +26,9 @@ end
 template '/var/tor/tor_archivist.env' do
   source 'environment_file.erb'
 
+  owner 'tor_bot'
+  group 'bots'
+
   variables(
     bot_name: 'tor_archivist',
     debug_mode: node.chef_environment != 'production',

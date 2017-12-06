@@ -27,6 +27,9 @@ end
 template '/var/tor/tor_ocr.env' do
   source 'environment_file.erb'
 
+  owner 'tor_bot'
+  group 'bots'
+
   variables(
     bot_name: 'tor_ocr',
     debug_mode: node.chef_environment != 'production',

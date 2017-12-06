@@ -28,6 +28,9 @@ log node.chef_environment
 template '/var/tor/tor_moderator.env' do
   source 'environment_file.erb'
 
+  owner 'tor_bot'
+  group 'bots'
+
   variables(
     bot_name: 'tor',
     debug_mode: node.chef_environment != 'production',
