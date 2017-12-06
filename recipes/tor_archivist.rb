@@ -9,7 +9,7 @@ sentry_url = search(:api_keys, 'id:sentry').first.fetch('url')
 slack_key = search(:api_keys, 'id:slack').first.fetch('key')
 
 execute 'install archivist' do
-  action :run
+  action :nothing
 
   cwd '/opt/tor_archivist'
 
