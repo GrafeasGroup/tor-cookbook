@@ -10,7 +10,7 @@ slack_key = search(:api_keys, 'id:slack').first.fetch('key')
 ocr_key = search(:api_keys, 'id:ocr_space').first.fetch('key')
 
 execute 'install ocr' do
-  action :nothing
+  action :run
 
   cwd '/opt/tor_ocr'
 
