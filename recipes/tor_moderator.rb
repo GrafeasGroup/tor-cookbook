@@ -23,8 +23,6 @@ execute 'install tor' do
   notifies :restart, 'systemd_unit[tor_moderator.service]', :delayed
 end
 
-log node.chef_environment
-
 template '/var/tor/tor_moderator.env' do
   source 'environment_file.erb'
 
