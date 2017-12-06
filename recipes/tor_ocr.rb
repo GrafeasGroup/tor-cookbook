@@ -15,7 +15,7 @@ execute 'install ocr' do
   cwd '/opt/tor_ocr'
 
   command <<-EOF
-  . /opt/virtualenv/bin/activate && pip install --process-dependency-links .
+  . /opt/virtualenv/bin/activate && pip install --process-dependency-links -e .
   EOF
 
   subscribes :run, 'git[/opt/tor_ocr]', :immediately
