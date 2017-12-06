@@ -33,7 +33,7 @@ template '/var/tor/tor_archivist.env' do
     bugsnag_api_key: bugsnag_key,
     slack_api_key: slack_key,
     sentry_api_url: sentry_url,
-    extra_vars: {
+    extra_variables: {
       # None right now, but we'll fill these in as they come up
     }
   )

@@ -34,7 +34,7 @@ template '/var/tor/tor_ocr.env' do
     bugsnag_api_key: bugsnag_key,
     slack_api_key: slack_key,
     sentry_api_url: sentry_url,
-    extra_vars: {
+    extra_variables: {
       'OCR_API_KEY' => ocr_key
     }
   )
