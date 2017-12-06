@@ -58,7 +58,8 @@ systemd_unit 'tor_ocr.service' do # rubocop:disable Metrics/BlockLength
       Restart: 'on-failure',
       TimeoutStopSec: '90', # 90 second timeout after SIGINT before sending a SIGKILL (kill -9)
       StandardOutput: 'syslog',
-      StandardError: 'syslog'
+      StandardError: 'syslog',
+      SyslogIdentifier: 'tor_ocr'
     },
     Install: {
       WantedBy: 'multi-user.target'
