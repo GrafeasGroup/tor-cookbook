@@ -17,7 +17,21 @@ Requirements
 Attributes
 ----------
 
-*No attributes defined*
+### `node['tor']['archivist_revision']`
+
+Git commit SHA (or branch, or tag) which should be deployed for the `tor_archivist` project
+
+### `node['tor']['core_revision']`
+
+Git commit SHA (or branch, or tag) which should be deployed for the `tor_core` project
+
+### `node['tor']['ocr_revision']`
+
+Git commit SHA (or branch, or tag) which should be deployed for the `tor_ocr` project
+
+### `node['tor']['tor_revision']`
+
+Git commit SHA (or branch, or tag) which should be deployed for the `tor` project
 
 Recipes
 -------
@@ -31,6 +45,10 @@ Install ALL the things!
 Installs/Configures python3, pip, and virtualenv
 
 ### tor::redis
+
+Installs/Configures Redis server
+
+### tor::app
 
 Installs/Configures Redis server
 
