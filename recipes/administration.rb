@@ -4,8 +4,6 @@
 #
 # Copyright:: 2017, Grafeas Group, Ltd., All Rights Reserved.
 
-# include_recipe 'chef-client::service'
-
 cookbook_file '/etc/sudoers.d/sudoers' do
   source 'sudoers'
   owner 'root'
