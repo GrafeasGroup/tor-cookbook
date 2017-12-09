@@ -49,7 +49,7 @@ template '/var/tor/praw.ini' do
         client_id: bot['client_id'],
         secret: bot['secret_key'],
         user_agent_slug: bot['user_agent_slug'] || bot['username'],
-        version: node['tor'][bot['slug'] + '_revision'] || 'master'
+        version: node['tor'][bot['id'] + '_revision'] || 'master'
       }
     end
   )
