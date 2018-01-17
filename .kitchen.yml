@@ -6,6 +6,9 @@ provisioner:
   name: chef_zero
   always_update_cookbooks: true
   data_bags_path: 'test/data_bags'
+  environments_path: test/environments
+  client_rb:
+    environment: dev
 
 verifier:
   name: inspec
