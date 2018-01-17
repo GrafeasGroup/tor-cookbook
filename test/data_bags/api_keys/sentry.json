@@ -1,0 +1,4 @@
+{
+  "id": "sentry",
+  "url": "http://foo:bar@sentry.example.com/2"
+}
