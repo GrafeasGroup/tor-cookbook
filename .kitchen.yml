@@ -1,6 +1,7 @@
 ---
 driver:
   name: vagrant
+  linked_clone: true
 
 provisioner:
   name: chef_zero
