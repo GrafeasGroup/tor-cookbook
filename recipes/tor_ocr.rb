@@ -21,7 +21,7 @@ execute 'install ocr' do
   subscribes :run, 'git[/opt/tor_ocr]', :immediately
   notifies :create, 'systemd_unit[tor_ocr.service]', :immediately
   notifies :enable, 'systemd_unit[tor_ocr.service]', :immediately
-  notifies :restart, 'systemd_unit[tor_ocr.service]', :delayed
+  notifies :restart, 'systemd_unit[tor_ocr.service]', :delayed unless node.chef_environment == 'dev'
 end
 
 template '/var/tor/tor_ocr.env' do
@@ -75,7 +75,7 @@ systemd_unit 'tor_ocr.service' do # rubocop:disable Metrics/BlockLength
   action :create
 
   # subscribes :reload_or_try_restart, 'template[/var/tor/praw.ini]', :delayed
-  subscribes :reload_or_try_restart, 'template[/var/tor/tor_ocr.env]', :delayed
+  subscribes :reload_or_try_restart, 'template[/var/tor/tor_ocr.env]', :delayed unless node.chef_environment == 'dev'
 
   only_if { ::File.exist?('/opt/virtualenv/bin/tor-apprentice') }
 end

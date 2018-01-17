@@ -20,7 +20,7 @@ execute 'install tor' do
   subscribes :run, 'git[/opt/tor]', :immediately
   notifies :create, 'systemd_unit[tor_moderator.service]', :immediately
   notifies :enable, 'systemd_unit[tor_moderator.service]', :immediately
-  notifies :restart, 'systemd_unit[tor_moderator.service]', :delayed
+  notifies :restart, 'systemd_unit[tor_moderator.service]', :delayed unless node.chef_environment == 'dev'
 end
 
 template '/var/tor/tor_moderator.env' do
@@ -74,7 +74,7 @@ systemd_unit 'tor_moderator.service' do # rubocop:disable Metrics/BlockLength
   action :create
 
   # subscribes :reload_or_try_restart, 'template[/var/tor/praw.ini]', :delayed
-  subscribes :reload_or_try_restart, 'template[/var/tor/tor_moderator.env]', :delayed
+  subscribes :reload_or_try_restart, 'template[/var/tor/tor_moderator.env]', :delayed unless node.chef_environment == 'dev'
 
   only_if { ::File.exist?('/opt/virtualenv/bin/tor-moderator') }
 end

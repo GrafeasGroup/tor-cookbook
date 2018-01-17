@@ -20,7 +20,7 @@ execute 'install archivist' do
   subscribes :run, 'git[/opt/tor_archivist]', :immediately
   notifies :create, 'systemd_unit[tor_archivist.service]', :immediately
   notifies :enable, 'systemd_unit[tor_archivist.service]', :immediately
-  notifies :restart, 'systemd_unit[tor_archivist.service]', :delayed
+  notifies :restart, 'systemd_unit[tor_archivist.service]', :delayed unless node.chef_environment == 'dev'
 end
 
 template '/var/tor/tor_archivist.env' do
@@ -74,7 +74,7 @@ systemd_unit 'tor_archivist.service' do # rubocop:disable Metrics/BlockLength
   action :create
 
   # subscribes :reload_or_try_restart, 'template[/var/tor/praw.ini]', :delayed
-  subscribes :reload_or_try_restart, 'template[/var/tor/tor_archivist.env]', :delayed
+  subscribes :reload_or_try_restart, 'template[/var/tor/tor_archivist.env]', :delayed unless node.chef_environment == 'dev'
 
   only_if { ::File.exist?('/opt/virtualenv/bin/tor-archivist') }
 end
