@@ -5,6 +5,9 @@ BUGSNAG_API_KEY=<%= @bugsnag_key %>
 SLACK_API_KEY=<%= @slack_key %>
 SENTRY_API_URL=<%= @sentry_url %>
 HEARTBEAT_FILE=<%= @heartbeat_filename %>
+MODCHAT_API_URL=<%= @rocketchat_url %>
+MODCHAT_API_USERNAME=<%= @rocketchat_user %>
+MODCHAT_API_PASSWORD=<%= @rocketchat_pass %>
 <% (@extra_variables || {}).each do |key, value| %>
 <%= key.to_s %>=<%= value %>
 <% end %>

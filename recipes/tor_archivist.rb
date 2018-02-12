@@ -7,6 +7,10 @@
 bugsnag_key = search(:api_keys, 'id:bugsnag').first.fetch('key')
 sentry_url = search(:api_keys, 'id:sentry').first.fetch('url')
 slack_key = search(:api_keys, 'id:slack').first.fetch('key')
+rocketchat = search(:api_keys, 'id:rocketchat').first
+rocketchat_url = rocketchat.fetch('base_url')
+rocketchat_user = rocketchat.fetch('username')
+rocketchat_pass = rocketchat.fetch('password')
 
 execute 'install archivist' do
   action :nothing
@@ -39,6 +43,9 @@ template '/var/tor/tor_archivist.env' do
     slack_key: slack_key,
     sentry_url: sentry_url,
     heartbeat_filename: 'archivist.heartbeat',
+    rocketchat_url: rocketchat_url,
+    rocketchat_user: rocketchat_user,
+    rocketchat_pass: rocketchat_pass,
     extra_variables: {
       # None right now, but we'll fill these in as they come up
     }

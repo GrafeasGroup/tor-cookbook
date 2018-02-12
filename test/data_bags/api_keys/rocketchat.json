@@ -1,0 +1,6 @@
+{
+  "id": "rocketchat",
+  "base_url": "https://rocketchat.example.com",
+  "username": "me",
+  "password": "hunter2"
+}
