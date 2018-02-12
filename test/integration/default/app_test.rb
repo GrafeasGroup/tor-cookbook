@@ -30,6 +30,21 @@ control 'tor-configured' do
     it { should exist }
     its('content') { should include '[example]', 'client_id=a', 'client_secret=b', 'username=example_user', 'password=S' }
   end
+
+  %w[tor_moderator tor_ocr tor_archivist].each do |bot|
+    describe file("/var/tor/#{bot}.env") do
+      it { should exist }
+
+      its('content') { should match(/^REDIS_CONNECTION_URL=\S+$/) }
+      its('content') { should match(/^BUGSNAG_API_KEY=\S+$/) }
+      its('content') { should match(/^SLACK_API_KEY=\S+$/) }
+      its('content') { should match(/^SENTRY_API_URL=\S+$/) }
+      its('content') { should match(/^HEARTBEAT_FILE=\S+$/) }
+      its('content') { should match(/^MODCHAT_API_URL=\S+$/) }
+      its('content') { should match(/^MODCHAT_API_USERNAME=\S+$/) }
+      its('content') { should match(/^MODCHAT_API_PASSWORD=\S+$/) }
+    end
+  end
 end
 
 control 'tor-services' do
