@@ -1,13 +1,13 @@
-BOT_NAME=<%= @bot_name %>
+BOT_NAME='<%= @bot_name.gsub(/'/, %('"'"')) %>'
 <% if @debug_mode %>DEBUG_MODE=1<% end %>
-REDIS_CONNECTION_URL=<%= @redis_uri %>
-BUGSNAG_API_KEY=<%= @bugsnag_key %>
-SLACK_API_KEY=<%= @slack_key %>
-SENTRY_API_URL=<%= @sentry_url %>
-HEARTBEAT_FILE=<%= @heartbeat_filename %>
-MODCHAT_API_URL=<%= @rocketchat_url %>
-MODCHAT_API_USERNAME=<%= @rocketchat_user %>
-MODCHAT_API_PASSWORD=<%= @rocketchat_pass %>
+REDIS_CONNECTION_URL='<%= @redis_uri.gsub(/'/, %('"'"')) %>'
+BUGSNAG_API_KEY='<%= @bugsnag_key.gsub(/'/, %('"'"')) %>'
+SLACK_API_KEY='<%= @slack_key.gsub(/'/, %('"'"')) %>'
+SENTRY_API_URL='<%= @sentry_url.gsub(/'/, %('"'"')) %>'
+HEARTBEAT_FILE='<%= @heartbeat_filename.gsub(/'/, %('"'"')) %>'
+MODCHAT_API_URL='<%= @rocketchat_url.gsub(/'/, %('"'"')) %>'
+MODCHAT_API_USERNAME='<%= @rocketchat_user.gsub(/'/, %('"'"')) %>'
+MODCHAT_API_PASSWORD='<%= @rocketchat_pass.gsub(/'/, %('"'"')) %>'
 <% (@extra_variables || {}).each do |key, value| %>
-<%= key.to_s %>=<%= value %>
+<%= key.to_s %>='<%= value.gsub(/'/, %('"'"')) %>'
 <% end %>
