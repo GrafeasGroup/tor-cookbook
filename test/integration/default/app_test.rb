@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # encoding: utf-8
 
 # Inspec test for recipe tor::app
@@ -31,7 +32,7 @@ control 'tor-configured' do
     its('content') { should include '[example]', 'client_id=a', 'client_secret=b', 'username=example_user', 'password=S' }
   end
 
-  %w[tor_moderator tor_ocr tor_archivist].each do |bot|
+  %w(tor_moderator tor_ocr tor_archivist).each do |bot|
     describe file("/var/tor/#{bot}.env") do
       it { should exist }
 

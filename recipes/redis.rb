@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook:: tor
 # Recipe:: redis
@@ -13,7 +14,7 @@ package 'redis' do
 end
 
 service 'redis' do
-  action %i[enable start]
+  action [:enable, :start]
 end
 
 # Copy backup file to restore data

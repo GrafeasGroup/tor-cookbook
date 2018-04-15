@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook:: tor
 # Recipe:: python
@@ -6,7 +7,7 @@
 
 include_recipe 'yum-ius::default'
 
-yum_package %w[python34 python34-devel] do
+yum_package %w(python34 python34-devel) do
   action :install
 end
 
@@ -22,7 +23,7 @@ execute 'python3 /tmp/get-pip.py' do
   not_if 'python3 -m pip --version'
 end
 
-yum_package %w[python36u python36u-pip python36u-devel] do
+yum_package %w(python36u python36u-pip python36u-devel) do
   action :install
 end
 

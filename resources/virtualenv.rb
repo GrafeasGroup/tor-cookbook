@@ -1,4 +1,4 @@
-# To learn more about Custom Resources, see https://docs.chef.io/custom_resources.html
+# frozen_string_literal: true
 resource_name :virtualenv
 
 property :path, String, name_property: true

@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 #
 # Cookbook:: tor
 # Recipe:: app
 #
 # Copyright:: 2017, Grafeas Group, Ltd., All Rights Reserved.
 
-python3 = `command -v python3.6`.strip
+python3 = shell_out('command -v python3.6').stdout.strip
 
 package 'git' do
   action :install
@@ -49,13 +50,13 @@ template '/var/tor/praw.ini' do
         client_id: bot['client_id'],
         secret: bot['secret_key'],
         user_agent_slug: bot['user_agent_slug'] || bot['username'],
-        version: node['tor'][bot['id'] + '_revision'] || 'master'
+        version: node['tor'][bot['id'] + '_revision'] || 'master',
       }
     end
   )
 end
 
-include_recipe 'tor::tor_core'
-include_recipe 'tor::tor_moderator'
-include_recipe 'tor::tor_archivist'
-include_recipe 'tor::tor_ocr'
+include_recipe '::tor_core'
+include_recipe '::tor_moderator'
+include_recipe '::tor_archivist'
+include_recipe '::tor_ocr'

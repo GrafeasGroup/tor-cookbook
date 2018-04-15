@@ -1,13 +1,14 @@
+# frozen_string_literal: true
 #
 # Cookbook:: tor
 # Recipe:: tor_archivist
 #
 # Copyright:: 2017, Grafeas Group, Ltd., All Rights Reserved.
 
-bugsnag_key = search(:api_keys, 'id:bugsnag').first.fetch('key')
-sentry_url = search(:api_keys, 'id:sentry').first.fetch('url')
-slack_key = search(:api_keys, 'id:slack').first.fetch('key')
-rocketchat = search(:api_keys, 'id:rocketchat').first
+bugsnag_key = data_bag_item(:api_keys, 'bugsnag').fetch('key')
+sentry_url = data_bag_item(:api_keys, 'sentry').fetch('url')
+slack_key = data_bag_item(:api_keys, 'slack').fetch('key')
+rocketchat = data_bag_item(:api_keys, 'rocketchat')
 rocketchat_url = rocketchat.fetch('base_url')
 rocketchat_user = rocketchat.fetch('username')
 rocketchat_pass = rocketchat.fetch('password')
@@ -52,12 +53,12 @@ template '/var/tor/tor_archivist.env' do
   )
 end
 
-systemd_unit 'tor_archivist.service' do # rubocop:disable Metrics/BlockLength
+systemd_unit 'tor_archivist.service' do
   content(
     Unit: {
       Description: 'The content curation bot for /r/TranscribersOfReddit',
       Documentation: 'https://github.com/GrafeasGroup/tor_archivist',
-      After: 'network.target'
+      After: 'network.target',
     },
     Service: {
       Type: 'simple',
@@ -71,10 +72,10 @@ systemd_unit 'tor_archivist.service' do # rubocop:disable Metrics/BlockLength
       TimeoutStopSec: '90', # 90 second timeout after SIGINT before sending a SIGKILL (kill -9)
       StandardOutput: 'syslog',
       StandardError: 'syslog',
-      SyslogIdentifier: 'tor_archivist'
+      SyslogIdentifier: 'tor_archivist',
     },
     Install: {
-      WantedBy: 'multi-user.target'
+      WantedBy: 'multi-user.target',
     }
   )
 

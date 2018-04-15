@@ -1,4 +1,5 @@
-# # encoding: utf-8
+# frozen_string_literal: true
+# encoding: utf-8
 
 # Inspec test for recipe tor::python
 
@@ -12,7 +13,7 @@ control 'modern-python' do
     installed and configured globally
   '
 
-  %w[python36u python36u-pip python36u-devel].each do |pkg|
+  %w(python36u python36u-pip python36u-devel).each do |pkg|
     describe package(pkg) do
       it { should be_installed }
     end

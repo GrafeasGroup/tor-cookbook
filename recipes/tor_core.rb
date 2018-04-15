@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook:: tor
 # Recipe:: tor_core

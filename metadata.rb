@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'tor'
 maintainer 'David Alexander'
 maintainer_email 'opensource@thelonelyghost.com'
