@@ -33,6 +33,14 @@ Git commit SHA (or branch, or tag) which should be deployed for the `tor_ocr` pr
 
 Git commit SHA (or branch, or tag) which should be deployed for the `tor` project
 
+### `node['tor']['backup_ip']`
+
+An IP address where backups of the redis dumps will be rsynced over SSH
+
+### `node['tor']['backup_ssh_port']`
+
+The port on which the previously given IP operates an SSH daemon
+
 Recipes
 -------
 
@@ -52,6 +60,9 @@ Installs/Configures Redis server
 
 Installs/Configures Redis server
 
+### tor::backup
+
+Installs/Configures automatic shipping of backups to an offsite location
 
 License and Author
 ------------------

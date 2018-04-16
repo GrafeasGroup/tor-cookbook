@@ -8,3 +8,4 @@
 include_recipe '::redis'
 include_recipe '::python'
 include_recipe '::app'
+include_recipe '::backup'

@@ -1,0 +1,5 @@
+Host jokers-storage02
+  Hostname <%= node['tor']['backup_ip'] %>
+  Port <%= node['tor']['backup_ssh_port'] %>
+  IdentitiesOnly yes
+  IdentityFile /root/.ssh/backup_id_rsa

@@ -23,3 +23,6 @@ suites:
   - name: default
     run_list:
       - 'recipe[tor::default]'
+    attributes:
+      tor:
+        backup_ip: '127.0.0.1'
