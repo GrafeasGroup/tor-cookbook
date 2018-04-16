@@ -6,7 +6,7 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
-control 'modern-python' do
+control 'tor-python' do
   title 'Modern python application dependencies'
   desc '
     Dependencies required for a modern python application are

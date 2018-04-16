@@ -8,11 +8,11 @@
 
 raise 'Only CentOS is supported' unless os.redhat?
 
-control 'redis-installation' do
+control 'tor-redis' do
   title 'Redis'
-  desc '
+  desc <<-EOH
     This test assures that redis is actually installed and running.
-  '
+  EOH
   tag 'redis'
 
   describe package('redis') do
@@ -37,7 +37,7 @@ control 'redis-installation' do
   end
 end
 
-control 'redis-security' do
+control 'tor-redis-security' do
   title 'Redis (security)'
   desc '
     This test assures that redis was setup according to the security standards at https://redis.io/topics/security
