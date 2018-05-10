@@ -23,4 +23,3 @@ suites:
   - name: default
     run_list:
       - 'recipe[tor::default]'
-    attributes:
