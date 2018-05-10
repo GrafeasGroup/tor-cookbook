@@ -56,9 +56,9 @@ Installs/Configures Redis server
 License and Author
 ------------------
 
-Author:: Grafeas Group, Ltd. (<opensource@thelonelyghost.com>)
+Author:: David Alexander (<opensource@thelonelyghost.com>)
 
 Copyright:: 2017, Grafeas Group, Ltd.
 
-License:: All Rights Reserved
+License:: MIT
 
