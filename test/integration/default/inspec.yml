@@ -1,0 +1,11 @@
+---
+name: 'tor-default'
+title: 'ToR (default suite)'
+summary: |-
+  Confirms the ToR cookbook installed/configured everything as expected
+maintainer: 'David Alexander <opensource@thelonelyghost.com>'
+copyright: 'Grafeas Group'
+license: 'MIT'
+version: '0.1.0'
+supports:
+  - platform-family: redhat

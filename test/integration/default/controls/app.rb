@@ -6,6 +6,7 @@
 
 control 'tor-installed' do
   title 'ToR Bot installation'
+  desc 'ToR bot is installed'
 
   describe file('/opt/virtualenv/bin/tor-archivist') do
     it { should exist }
@@ -25,13 +26,14 @@ end
 
 control 'tor-configured' do
   title 'ToR Bot configuration'
+  desc 'ToR bot is configured correctly'
 
   describe file('/var/tor/praw.ini') do
     it { should exist }
     its('content') { should include '[example]', 'client_id=a', 'client_secret=b', 'username=example_user', 'password=S' }
   end
 
-  %w[tor_moderator tor_ocr tor_archivist].each do |bot|
+  %w(tor_moderator tor_ocr tor_archivist).each do |bot|
     describe file("/var/tor/#{bot}.env") do
       it { should exist }
 
@@ -49,6 +51,7 @@ end
 
 control 'tor-services' do
   title 'ToR Bots are running'
+  desc 'ToR bot is running'
 
   describe service('tor_moderator') do
     it { should be_installed }

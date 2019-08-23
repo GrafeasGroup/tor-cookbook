@@ -5,8 +5,6 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
-raise 'Only CentOS is supported' unless os.redhat?
-
 control 'redis-installation' do
   title 'Redis'
   desc '
