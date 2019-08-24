@@ -15,5 +15,3 @@ recipe 'tor::redis', 'Installs/Configures Redis server'
 recipe 'tor::app', 'Installs/Configures the ToR bots'
 
 supports 'centos', '>= 7.3'
-
-depends 'yum-ius', '~> 2.2.0'

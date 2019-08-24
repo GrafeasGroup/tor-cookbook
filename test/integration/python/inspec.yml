@@ -1,0 +1,11 @@
+---
+name: 'tor-python'
+title: 'Python-installation process'
+summary: |-
+  Checks that the python installation goes off without a problem.
+maintainer: 'David Alexander <opensource@thelonelyghost.com>'
+copyright: 'Grafeas Group'
+license: 'MIT'
+version: '0.1.0'
+supports:
+  - platform-family: redhat

@@ -23,3 +23,6 @@ suites:
   - name: default
     run_list:
       - 'recipe[tor::default]'
+  - name: python
+    run_list:
+      - 'recipe[tor::python]'

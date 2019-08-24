@@ -13,7 +13,7 @@ action :create do
   pth = new_resource.path
 
   execute 'virtualenv create' do
-    command "virtualenv --python='#{py}' --no-site-packages '#{pth}'"
+    command "/usr/local/bin/#{py} -m venv '#{pth}'"
   end
 end
 
