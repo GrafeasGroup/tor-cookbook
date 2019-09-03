@@ -13,7 +13,7 @@ package 'redis' do
 end
 
 service 'redis' do
-  action %i[enable start]
+  action [:enable, :start]
 end
 
 # Copy backup file to restore data
@@ -31,6 +31,7 @@ end
 # For simplicity here, let's just keep AOF disabled. (^_^)
 file '/var/lib/redis/dump.rdb' do
   content(lazy { ::IO.read('/opt/redis-restore.rdb') })
+  sensitive true # Don't dump this into the logs because it's a lot of data
 
   owner 'redis'
   group 'redis'
