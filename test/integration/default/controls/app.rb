@@ -1,66 +1,112 @@
-# encoding: utf-8
+control 'tor-moderator' do
+  title 'ToR moderator bot'
+  desc 'The moderation bot is installed and configured correctly'
+  impact 1.0
 
-# Inspec test for recipe tor::app
-# The Inspec reference, with examples and extensive documentation, can be
-# found at http://inspec.io/docs/reference/resources/
+  describe directory('/var/tor/tor_moderator') do
+    it { should exist }
+  end
 
-control 'tor-installed' do
-  title 'ToR Bot installation'
-  desc 'ToR bot is installed'
+  describe file('/var/tor/tor_moderator/environment') do
+    it { should exist }
+    its('owner') { should eq 'root' }
+    its('group') { should eq 'root' }
+    its('content') { should match(/^REDIS_CONNECTION_URL='\S+'$/) }
+    its('content') { should match(/^BUGSNAG_API_KEY='\S+'$/) }
+    its('content') { should match(/^SLACK_API_KEY='\S+'$/) }
+    its('content') { should match(/^HEARTBEAT_FILE='\S+'$/) }
+  end
 
-  describe file('/opt/virtualenv/bin/tor-archivist') do
+  describe file('/var/tor/tor_moderator/praw.ini') do
+    it { should exist }
+    its('content') { should include '[tor]' }
+    its('owner') { should eq 'tor_bot' }
+    its('group') { should eq 'bots' }
+    its('mode') { should cmp '600' }
+    # its('content') { should include '[example]', 'client_id=a', 'client_secret=b', 'username=example_user', 'password=S' }
+  end
+
+  describe file('/var/tor/tor_moderator/venv/bin/tor-moderator') do
     it { should exist }
     it { should be_executable }
   end
-
-  describe file('/opt/virtualenv/bin/tor-apprentice') do
-    it { should exist }
-    it { should be_executable }
-  end
-
-  describe file('/opt/virtualenv/bin/tor-moderator') do
-    it { should exist }
-    it { should be_executable }
-  end
-end
-
-control 'tor-configured' do
-  title 'ToR Bot configuration'
-  desc 'ToR bot is configured correctly'
-
-  describe file('/var/tor/praw.ini') do
-    it { should exist }
-    its('content') { should include '[example]', 'client_id=a', 'client_secret=b', 'username=example_user', 'password=S' }
-  end
-
-  %w(tor_moderator tor_ocr tor_archivist).each do |bot|
-    describe file("/var/tor/#{bot}.env") do
-      it { should exist }
-
-      its('content') { should match(/^REDIS_CONNECTION_URL='\S+'$/) }
-      its('content') { should match(/^BUGSNAG_API_KEY='\S+'$/) }
-      its('content') { should match(/^SLACK_API_KEY='\S+'$/) }
-      its('content') { should match(/^SENTRY_API_URL='\S+'$/) }
-      its('content') { should match(/^HEARTBEAT_FILE='\S+'$/) }
-      its('content') { should match(/^MODCHAT_API_URL='\S+'$/) }
-      its('content') { should match(/^MODCHAT_API_USERNAME='\S+'$/) }
-      its('content') { should match(/^MODCHAT_API_PASSWORD='\S+'$/) }
-    end
-  end
-end
-
-control 'tor-services' do
-  title 'ToR Bots are running'
-  desc 'ToR bot is running'
 
   describe service('tor_moderator') do
     it { should be_installed }
     it { should be_enabled }
   end
+end
+
+control 'tor-ocr' do
+  title 'ToR OCR bot'
+  desc 'The apprentice bot is installed and configured correctly'
+  impact 1.0
+
+  describe directory('/var/tor/tor_ocr') do
+    it { should exist }
+  end
+
+  describe file('/var/tor/tor_ocr/environment') do
+    it { should exist }
+    its('owner') { should eq 'root' }
+    its('group') { should eq 'root' }
+    its('content') { should match(/^REDIS_CONNECTION_URL='\S+'$/) }
+    its('content') { should match(/^BUGSNAG_API_KEY='\S+'$/) }
+    its('content') { should match(/^SLACK_API_KEY='\S+'$/) }
+    its('content') { should match(/^HEARTBEAT_FILE='\S+'$/) }
+  end
+
+  describe file('/var/tor/tor_ocr/praw.ini') do
+    it { should exist }
+    its('content') { should include '[tor_ocr]' }
+    its('owner') { should eq 'tor_bot' }
+    its('group') { should eq 'bots' }
+    its('mode') { should cmp '600' }
+    # its('content') { should include '[example]', 'client_id=a', 'client_secret=b', 'username=example_user', 'password=S' }
+  end
+
+  describe file('/var/tor/tor_ocr/venv/bin/tor-apprentice') do
+    it { should exist }
+    it { should be_executable }
+  end
 
   describe service('tor_ocr') do
     it { should be_installed }
     it { should be_enabled }
+  end
+end
+
+control 'tor-archivist' do
+  title 'ToR archivist bot'
+  desc 'The historian bot is installed and configured correctly'
+  impact 1.0
+
+  describe directory('/var/tor/tor_archivist') do
+    it { should exist }
+  end
+
+  describe file('/var/tor/tor_archivist/environment') do
+    it { should exist }
+    its('owner') { should eq 'root' }
+    its('group') { should eq 'root' }
+    its('content') { should match(/^REDIS_CONNECTION_URL='\S+'$/) }
+    its('content') { should match(/^BUGSNAG_API_KEY='\S+'$/) }
+    its('content') { should match(/^SLACK_API_KEY='\S+'$/) }
+    its('content') { should match(/^HEARTBEAT_FILE='\S+'$/) }
+  end
+
+  describe file('/var/tor/tor_archivist/praw.ini') do
+    it { should exist }
+    its('content') { should include '[tor_archivist]' }
+    its('owner') { should eq 'tor_bot' }
+    its('group') { should eq 'bots' }
+    its('mode') { should cmp '600' }
+    # its('content') { should include '[example]', 'client_id=a', 'client_secret=b', 'username=example_user', 'password=S' }
+  end
+
+  describe file('/var/tor/tor_archivist/venv/bin/tor-archivist') do
+    it { should exist }
+    it { should be_executable }
   end
 
   describe service('tor_archivist') do

@@ -1,22 +1,10 @@
-# # encoding: utf-8
-
-# Inspec test for recipe tor::redis
-
-# The Inspec reference, with examples and extensive documentation, can be
-# found at http://inspec.io/docs/reference/resources/
-
 control 'redis-installation' do
   title 'Redis'
-  desc '
-    This test assures that redis is actually installed and running.
-  '
+  desc 'This test assures that redis is actually installed and running.'
   tag 'redis'
+  impact 1.0
 
-  describe package('redis') do
-    it { should be_installed }
-  end
-
-  describe systemd_service('redis') do
+  describe service('redis') do
     it { should be_installed }
     it { should be_enabled }
     it { should be_running }
@@ -40,6 +28,7 @@ control 'redis-security' do
     This test assures that redis was setup according to the security standards at https://redis.io/topics/security
   '
   tag 'redis'
+  impact 1.0
 
   describe port(6379) do
     its('addresses') { should eq ['127.0.0.1'] }

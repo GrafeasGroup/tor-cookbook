@@ -1,0 +1,9 @@
+{
+  "id": "archivist",
+  "slug": "example",
+  "username": "example_user",
+  "password": "S00p3rS3ky00r!",
+  "client_id": "aaaaaaaaaaaaaaaaa",
+  "secret_key": "bbbbbbbbbbbb-_33333333333",
+  "user_agent_slug": "example_user"
+}
