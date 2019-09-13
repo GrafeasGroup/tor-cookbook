@@ -4,11 +4,15 @@
 #
 # Copyright:: 2017, Grafeas Group, Ltd., All Rights Reserved.
 
+python_version = node['tor']['python_version'].gsub(/^v/, '')
+
+# /usr/local/bin/python{MAJOR}.{MINOR} => python3.7
+python_exe = "/usr/local/bin/python#{python_version.split('.')[0..1].join('.')}"
 python_tgz = ::File.join(Chef::Config[:file_cache_path], 'python.tgz')
 pyinstall_dir = ::File.join(Chef::Config[:file_cache_path], 'pyinstall')
 
 remote_file python_tgz do
-  source 'https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tgz'
+  source "https://www.python.org/ftp/python/#{python_version}/Python-#{python_version}.tgz"
 
   action :create
 end
@@ -45,7 +49,7 @@ execute "tar xzf '#{python_tgz}' --strip-components=1" do
   notifies :create, 'directory[pyinstall]', :before
   notifies :delete, 'directory[pyinstall]', :delayed
 
-  not_if { ::File.exist?('/usr/local/bin/python3.7') }
+  not_if { ::File.exist?(python_exe) }
 end
 
 execute 'configure python installation' do
@@ -54,7 +58,7 @@ execute 'configure python installation' do
   creates ::File.join(pyinstall_dir, 'Makefile')
   cwd pyinstall_dir
 
-  not_if { ::File.exist?('/usr/local/bin/python3.7') }
+  not_if { ::File.exist?(python_exe) }
 end
 
 execute 'compile python' do
@@ -63,7 +67,7 @@ execute 'compile python' do
   creates ::File.join(pyinstall_dir, 'build')
   cwd pyinstall_dir
 
-  not_if { ::File.exist?('/usr/local/bin/python3.7') }
+  not_if { ::File.exist?(python_exe) }
 end
 
 execute 'install python' do
@@ -76,7 +80,7 @@ execute 'install python' do
   }
 
   live_stream true
-  creates '/usr/local/bin/python3.7'
+  creates python_exe
   cwd pyinstall_dir
 end
 
@@ -85,8 +89,8 @@ link '/usr/local/bin/python' do
 end
 
 execute 'install pip' do
-  command '/usr/local/bin/python -m ensurepip'
+  command "#{python_exe} -m ensurepip"
   live_stream true
 
-  not_if '/usr/local/bin/python -m pip --version'
+  not_if "#{python_exe} -m pip --version"
 end
