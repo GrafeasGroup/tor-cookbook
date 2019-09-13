@@ -4,35 +4,42 @@
 #
 # Copyright:: 2017, Grafeas Group, Ltd., All Rights Reserved.
 
-bugsnag_key = search(:api_keys, 'id:bugsnag').first.fetch('key')
-sentry_url = search(:api_keys, 'id:sentry').first.fetch('url')
-slack_key = search(:api_keys, 'id:slack').first.fetch('key')
-ocr_key = search(:api_keys, 'id:ocr_space').first.fetch('key')
-rocketchat = search(:api_keys, 'id:rocketchat').first
-rocketchat_url = rocketchat.fetch('base_url')
-rocketchat_user = rocketchat.fetch('username')
-rocketchat_pass = rocketchat.fetch('password')
+bugsnag_key = data_bag_item('api_keys', 'bugsnag').fetch('key')
+slack_key = data_bag_item('api_keys', 'slack').fetch('key')
+bot_info = data_bag_item('bots', 'tor_ocr') || {}
 
-execute 'install ocr' do
-  action :nothing
+# Shorthand stuff
+bot_version = node['tor']['ocr_revision'].gsub(/^v/, '')
+pip_whl = ::File.join(Chef::Config[:file_cache_path], "tor_ocr-#{bot_version}-py3-none-any.whl")
+base_dir = '/var/tor/tor_ocr'
+venv = ::File.join(base_dir, 'venv')
+env_file = ::File.join(base_dir, 'environment')
 
-  cwd '/opt/tor_ocr'
+service_is_started = !shell_out('systemctl is-active tor_ocr.service --quiet').error?
 
-  command <<-EOF
-  . /opt/virtualenv/bin/activate && pip install --process-dependency-links -e .
-  EOF
-
-  subscribes :run, 'git[/opt/tor_ocr]', :immediately
-  notifies :create, 'systemd_unit[tor_ocr.service]', :immediately
-  notifies :enable, 'systemd_unit[tor_ocr.service]', :immediately
-  notifies :restart, 'systemd_unit[tor_ocr.service]', :delayed unless node.chef_environment == 'dev'
+directory base_dir do
+  owner 'tor_bot'
+  group 'bots'
+  recursive true
 end
 
-template '/var/tor/tor_ocr.env' do
-  source 'environment_file.erb'
+virtualenv venv do
+  python '/usr/local/bin/python3'
 
   owner 'tor_bot'
   group 'bots'
+
+  action :create
+
+  not_if { File.exist?(::File.join(venv, 'bin', 'activate')) }
+end
+
+template env_file do
+  source 'environment_file.erb'
+
+  owner 'root'
+  group 'root'
+  mode '600'
 
   sensitive true
 
@@ -42,18 +49,52 @@ template '/var/tor/tor_ocr.env' do
     redis_uri: 'redis://localhost:6379/0',
     bugsnag_key: bugsnag_key,
     slack_key: slack_key,
-    sentry_url: sentry_url,
-    heartbeat_filename: 'ocr.heartbeat',
-    rocketchat_url: rocketchat_url,
-    rocketchat_user: rocketchat_user,
-    rocketchat_pass: rocketchat_pass,
-    extra_variables: {
-      'OCR_API_KEY' => ocr_key
-    }
+    heartbeat_filename: 'heartbeat.port'
   )
+
+  notifies :restart, 'systemd_unit[tor_ocr.service]', :delayed if service_is_started
 end
 
-systemd_unit 'tor_ocr.service' do # rubocop:disable Metrics/BlockLength
+template ::File.join(base_dir, 'praw.ini') do
+  source 'praw.ini.erb'
+
+  owner 'tor_bot'
+  group 'bots'
+  mode '600'
+
+  sensitive true
+
+  variables(
+    slug: 'tor_ocr',
+    username: bot_info['username'],
+    password: bot_info['password'],
+    client_id: bot_info['client_id'],
+    secret_key: bot_info['secret_key'],
+    user_agent_slug: bot_info['user_agent_slug'] || bot_info['username'],
+    version: bot_version
+  )
+
+  notifies :restart, 'systemd_unit[tor_ocr.service]', :delayed if service_is_started
+end
+
+remote_file pip_whl do
+  source "https://github.com/GrafeasGroup/tor_ocr/releases/download/v#{bot_version}/tor_ocr-#{bot_version}-py3-none-any.whl"
+
+  notifies :run, 'execute[install tor_ocr]', :immediately
+end
+
+execute 'install tor_ocr' do
+  action :nothing
+
+  command <<~EOF
+    . #{::File.join(venv, 'bin', 'activate')}
+    pip install '#{pip_whl}'
+  EOF
+
+  notifies :restart, 'systemd_unit[tor_ocr.service]', :delayed if service_is_started
+end
+
+systemd_unit 'tor_ocr.service' do
   content(
     Unit: {
       Description: 'The transcription guesser bot for /r/TranscribersOfReddit',
@@ -62,11 +103,11 @@ systemd_unit 'tor_ocr.service' do # rubocop:disable Metrics/BlockLength
     },
     Service: {
       Type: 'simple',
-      EnvironmentFile: '/var/tor/tor_ocr.env',
-      ExecStart: '/opt/virtualenv/bin/tor-apprentice',
+      EnvironmentFile: env_file,
+      ExecStart: ::File.join(venv, 'bin', 'tor-apprentice'),
       User: 'tor_bot',
       Group: 'bots',
-      WorkingDirectory: '/var/tor',
+      WorkingDirectory: base_dir,
       KillSignal: 'SIGINT',
       Restart: 'on-failure',
       TimeoutStopSec: '90', # 90 second timeout after SIGINT before sending a SIGKILL (kill -9)
@@ -79,17 +120,5 @@ systemd_unit 'tor_ocr.service' do # rubocop:disable Metrics/BlockLength
     }
   )
 
-  action :create
-
-  # subscribes :reload_or_try_restart, 'template[/var/tor/praw.ini]', :delayed
-  subscribes :reload_or_try_restart, 'template[/var/tor/tor_ocr.env]', :delayed unless node.chef_environment == 'dev'
-
-  only_if { ::File.exist?('/opt/virtualenv/bin/tor-apprentice') }
-end
-
-git '/opt/tor_ocr' do
-  repository 'https://github.com/GrafeasGroup/tor_ocr.git'
-  revision node['tor']['ocr_revision']
-
-  action :sync
+  action [:create, :enable]
 end

@@ -1,9 +1,6 @@
-<% @bots.each do |bot| %>
-[<%= bot[:slug] %>]
-username=<%= bot[:username] %>
-password=<%= bot[:password] %>
-client_id=<%= bot[:client_id] %>
-client_secret=<%= bot[:secret] %>
-user_agent=python:org.grafeas.<%= bot[:user_agent_slug] %>:<%= bot[:version] %> (by /u/itsthejoker)
-
-<% end %>
+[<%= @slug %>]
+username=<%= @username %>
+password=<%= @password %>
+client_id=<%= @client_id %>
+client_secret=<%= @secret_key %>
+user_agent=python:org.grafeas.<%= @user_agent_slug %>:<%= @version %> (by /u/itsthejoker)

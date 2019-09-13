@@ -1,7 +1,6 @@
 default['tor'].tap do |attr|
-  attr['tor_revision'] = 'CLOUD-DEPLOYMENT-TEST'
-  attr['archivist_revision'] = 'CLOUD-DEPLOYMENT-TEST'
-  attr['ocr_revision'] = 'CLOUD-DEPLOYMENT-TEST'
-  attr['core_revision'] = 'master'
+  attr['tor_revision'] = 'v3.11.0'
+  attr['archivist_revision'] = 'v0.4.1'
+  attr['ocr_revision'] = 'v0.2.1'
   attr['python_version'] = '3.7.4'
 end
