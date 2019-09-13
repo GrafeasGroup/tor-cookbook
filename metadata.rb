@@ -4,8 +4,8 @@ maintainer_email 'opensource@thelonelyghost.com'
 license 'MIT'
 description 'Installs/Configures tor'
 long_description 'Installs/Configures tor'
-version '0.9.0'
-chef_version '>= 12.1' if respond_to?(:chef_version)
+version '1.0.0'
+chef_version '>= 15.0'
 issues_url 'https://github.com/GrafeasGroup/tor-cookbook/issues'
 source_url 'https://github.com/GrafeasGroup/tor-cookbook'
 
